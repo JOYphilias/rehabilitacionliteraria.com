@@ -458,7 +458,9 @@
       /* Al abrir, SEIS y la frase están alineados y quietos. Al bajar se separan: SEIS sale a la izquierda y la frase a la derecha. */
       var sr = seisBox.getBoundingClientRect();
       var absTop = sr.top + window.scrollY;
-      var pp = clamp(window.scrollY / Math.max(300, absTop * 0.9), 0, 1);
+      /* Se mantiene quieto hasta que el bloque entra completo en pantalla (en 1920x1080 queda abajo del pliegue) y entonces se separa. */
+      var hold = Math.max(0, absTop + sr.height - vh + 24);
+      var pp = clamp((window.scrollY - hold) / Math.max(260, vh * 0.7), 0, 1);
       pp = pp * pp * (3 - 2 * pp);
       seisWord.style.translate = (-pp * (seisWord.getBoundingClientRect().width + 90)).toFixed(1) + 'px 0';
       seisText.style.translate = (pp * (window.innerWidth + 40)).toFixed(1) + 'px 0';
