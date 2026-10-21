@@ -186,7 +186,7 @@
 <main id="main">
 
   <!-- 1 · Mixtli Sánchez -->
-  <div class="stripes tall" data-stripes="left" data-magenta aria-hidden="true"><canvas></canvas></div>
+  <div class="stripes tall" data-stripes="left" aria-hidden="true"><canvas></canvas></div>
   <section class="quote grid wrap" data-six="1">
     <div class="q">
       <p class="num" aria-hidden="true">1</p>
@@ -232,7 +232,7 @@
   <section class="quote right grid wrap" data-six="4">
     <div class="q">
       <p class="num" aria-hidden="true">4</p>
-      <blockquote><p>La soledad es mi fuente creativa y las letras, mi alimento</p></blockquote>
+      <blockquote><p>La soledad es mi fuente creativa y las letras, mi alimento.</p></blockquote>
       <p class="attr tag" data-speed="-0.03"><b>Cada día: escribir</b><span>/ Luis José Gaviño</span></p>
     </div>
   </section>
@@ -260,7 +260,7 @@
   <section class="quote right grid wrap" data-six="6">
     <div class="q">
       <p class="num" aria-hidden="true">6</p>
-      <blockquote><p>Soy un fantasma con cuerpo, como todo libro:</p></blockquote>
+      <blockquote><p>Soy un fantasma con cuerpo, como todo libro.</p></blockquote>
       <p class="attr tag" data-speed="-0.03"><b>No soy un fantasma</b><span>/ Alain Briseño</span></p>
     </div>
   </section>
@@ -358,7 +358,7 @@
   /* Rayas: grupos de líneas verticales con separación creciente, como en las guardas del libro. */
   var GAPS = [0, 14, 30, 50, 76, 108, 148, 196, 252];
   var stripes = Array.prototype.slice.call(document.querySelectorAll('[data-stripes]')).map(function (el, idx) {
-    return { el: el, canvas: el.querySelector('canvas'), align: el.getAttribute('data-stripes'), mode: idx % 2 === 0 ? 'v' : 'h', magenta: el.hasAttribute('data-magenta'), dims: null };
+    return { el: el, canvas: el.querySelector('canvas'), align: el.getAttribute('data-stripes'), mode: idx % 2 === 0 ? 'v' : 'h', dims: null };
   });
   function drawStripes(s, p) {
     var c = s.dims || (s.dims = fit(s.canvas)), ctx = c.ctx, w = c.w, h = c.h;
@@ -392,13 +392,6 @@
         else { ctx.moveTo(w / 2 - w * ln / 2, y); ctx.lineTo(w / 2 + w * ln / 2, y); }
       }
       ctx.stroke();
-    }
-    if (s.magenta) {
-      /* Cuadro magenta del libro: se queda atrás con el scroll y el bloque negro lo cubre. */
-      var rw = clamp(w * 0.26, 150, 340), rh = rw / 1.6;
-      var ry = h * 0.2 + (reduce ? 0 : (p - 0.5) * 80);
-      ctx.fillStyle = '#db0080';
-      ctx.fillRect(Math.round(w * 0.5), Math.round(ry), Math.round(rw), Math.round(rh));
     }
     lines('rgba(' + FG + ',0.9)');
     if (blockH > 0) {
