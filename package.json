@@ -1,0 +1,10 @@
+{
+  "name": "rehabilitacionliteraria",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Microsite del libro Esto no es un libro",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "google-auth-library": "^9.15.0"
+  }
+}
