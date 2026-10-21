@@ -1,4 +1,4 @@
-# rehabilitacionliteraria.com (sitio de pruebas)
+# readaptacionliteraria.com (sitio de pruebas)
 
 Sitio estático de una sola página. No necesita build.
 
