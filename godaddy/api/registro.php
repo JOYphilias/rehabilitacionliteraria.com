@@ -1,10 +1,9 @@
 <?php
 /**
- * Registro del formulario en Google Sheets con una cuenta de servicio (GoDaddy / cPanel, PHP 7.4+).
+ * Registro del formulario en Google Sheets con una cuenta de servicio (PHP 7.4+; probado para PHP 8.2).
  *
- * La clave de la cuenta de servicio (el archivo JSON de Google) se sube UNA vez FUERA de public_html,
- * a la carpeta de inicio del hosting, con el nombre: readaptacion-google.json
- * Ejemplo: /home/USUARIO/readaptacion-google.json   (public_html queda en /home/USUARIO/public_html)
+ * La clave de la cuenta de servicio va en el archivo api/registro-config.php (ver registro-config.ejemplo.php).
+ * Es un archivo PHP que solo devuelve datos: aunque alguien lo abra en el navegador, no muestra nada.
  */
 const SHEET_ID = '1HRA0kYh20bCoJH60ZlR9EWsko_CMT_72uiYMSR5qgo4';
 const HOJA = 'Registros';
@@ -94,10 +93,14 @@ if ($nombre === '' || !preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/', $correo)) {
 }
 
 try {
-    $ruta = dirname($_SERVER['DOCUMENT_ROOT']) . '/readaptacion-google.json';
-    if (!is_readable($ruta)) throw new Exception('No se encuentra la clave de Google en ' . $ruta);
-    $clave = json_decode(file_get_contents($ruta), true);
-    if (empty($clave['client_email']) || empty($clave['private_key'])) throw new Exception('La clave de Google está incompleta.');
+    $ruta = __DIR__ . '/registro-config.php';
+    if (!is_readable($ruta)) throw new Exception('Falta api/registro-config.php');
+    $clave = include $ruta;
+    if (!is_array($clave) || empty($clave['client_email']) || empty($clave['private_key'])
+        || strpos($clave['private_key'], 'PEGA_AQUI') !== false) {
+        throw new Exception('api/registro-config.php está incompleto.');
+    }
+    $clave['private_key'] = str_replace('\\n', "\n", $clave['private_key']);
 
     $t = token($clave);
     $auth = ['Authorization: Bearer ' . $t, 'Content-Type: application/json'];

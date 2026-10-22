@@ -9,9 +9,9 @@ echo "OpenSSL: " . ok(function_exists('openssl_sign')) . "\n";
 echo "cURL: " . ok(function_exists('curl_init')) . "\n";
 echo "mbstring: " . ok(function_exists('mb_substr')) . "\n";
 
-$raiz = dirname($_SERVER['DOCUMENT_ROOT'] ?? '');
-echo "Carpeta de inicio: " . $raiz . "\n";
-echo "Clave de Google (readaptacion-google.json): " . (is_readable($raiz . '/readaptacion-google.json') ? 'ENCONTRADA' : 'no está (aún)') . "\n";
+echo "Carpeta del sitio: " . ($_SERVER['DOCUMENT_ROOT'] ?? '?') . "\n";
+echo "Archivo api/registro-config.php: " . (is_readable(__DIR__ . '/api/registro-config.php') ? 'ENCONTRADO' : 'no está (aún)') . "\n";
+echo "Servidor: " . ($_SERVER['SERVER_SOFTWARE'] ?? '?') . "\n";
 
 if (function_exists('curl_init')) {
     $ch = curl_init('https://oauth2.googleapis.com/token');
