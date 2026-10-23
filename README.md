@@ -13,7 +13,7 @@ Sitio estático de una sola página. No necesita build.
 
 ## Formulario → Google Sheets (cuenta de servicio)
 
-El formulario envía a `/api/registro` (función de Vercel, `api/registro.js`), que agrega una fila a la pestaña `Registros` de la hoja "FORMULARIO rehabilitacionliteraria.com".
+El formulario envía a `/api/registro` (función de Vercel, `api/registro.js`), que agrega una fila a la pestaña `Registros` de la hoja "FORMULARIO readaptacionliteraria.com".
 
 Variables de entorno en Vercel (Settings → Environment Variables), para Production, Preview y Development:
 
