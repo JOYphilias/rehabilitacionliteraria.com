@@ -169,6 +169,18 @@
   }
   @media (prefers-reduced-motion: reduce) { .six span { transition: none; } }
 </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JN4Y7D6R7R"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){ dataLayer.push(arguments); }
+gtag('js', new Date());
+/* Solo se mide en el dominio definitivo (no en vistas previas ni en local) */
+if (/(^|\.)readaptacionliteraria\.com$/.test(location.hostname)) {
+  gtag('config', 'G-JN4Y7D6R7R');
+} else {
+  window['ga-disable-G-JN4Y7D6R7R'] = true;
+}
+</script>
 </head>
 <body>
 <header class="hero wrap">
@@ -299,6 +311,7 @@
     <summary class="tag">Aviso de privacidad</summary>
     <div class="priv">
       <p>Los datos personales que recabamos en este sitio, tu nombre y tu correo electrónico, se usan únicamente para avisarte de las novedades del libro y de sus presentaciones.</p>
+      <p>Este sitio usa Google Analytics para conocer, de forma estadística, cuántas personas lo visitan y cómo lo recorren. Para ello se utilizan cookies y se recogen datos de navegación como el tipo de dispositivo, la región aproximada y las páginas vistas. Con estos datos no te identificamos personalmente, y puedes evitar su registro desde la configuración de tu navegador o con el complemento de inhabilitación de Google Analytics.</p>
       <p>No los vendemos ni los compartimos con terceros ajenos a este proyecto editorial. Los conservamos mientras quieras seguir recibiendo noticias.</p>
       <p>Puedes ejercer tus derechos de acceso, rectificación, cancelación y oposición, o pedir que dejemos de escribirte, respondiendo a cualquiera de nuestros correos.</p>
     </div>
@@ -533,6 +546,24 @@
   Array.prototype.forEach.call(document.images, function (im) { if (!im.complete) im.addEventListener('load', relayout); });
   relayout();
 
+
+  /* Profundidad de scroll para Analytics (25, 50, 75 y 100 %) */
+  (function () {
+    var marcas = [25, 50, 75, 100], enviadas = {};
+    function medir() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      if (h <= 0) return;
+      var pct = (window.scrollY / h) * 100;
+      marcas.forEach(function (m) {
+        if (pct >= m - 1 && !enviadas[m]) {
+          enviadas[m] = true;
+          try { gtag('event', 'scroll_profundidad', { porcentaje: m }); } catch (e) {}
+        }
+      });
+    }
+    window.addEventListener('scroll', medir, { passive: true });
+  })();
+
   /* Aviso de privacidad */
   var priv = document.getElementById('privacidad');
   document.getElementById('ir-privacidad').addEventListener('click', function () {
@@ -565,7 +596,7 @@
       body: JSON.stringify({ nombre: n, correo: c, web: document.getElementById('web').value })
     }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok && j.ok }; }); })
       .then(function (r) {
-        if (r.ok) { estado.textContent = gracias; return; }
+        if (r.ok) { estado.textContent = gracias; try { gtag('event', 'registro_formulario'); } catch (e) {} return; }
         btn.disabled = false; estado.textContent = 'No pudimos enviar tus datos. Intenta de nuevo en un momento.';
       })
       .catch(function () { btn.disabled = false; estado.textContent = 'No pudimos enviar tus datos. Intenta de nuevo en un momento.'; });
